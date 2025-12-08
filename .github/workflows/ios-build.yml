@@ -7,9 +7,9 @@ jobs:
   build-ios:
     runs-on: macos-latest
 
-defaults:
-  run:
-    working-directory: DVHMA-Featherweight/platforms/ios
+    defaults:
+      run:
+        working-directory: DVHMA-Featherweight
 
     steps:
       - name: Checkout repository
@@ -26,7 +26,7 @@ defaults:
       - name: Install project dependencies
         run: npm install
 
-      # Force recreate iOS platform (prevents missing workspace errors)
+      # Recreate iOS platform cleanly
       - name: Prepare iOS Platform
         run: |
           cordova platform rm ios || true
