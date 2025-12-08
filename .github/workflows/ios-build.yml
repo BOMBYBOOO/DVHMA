@@ -47,6 +47,11 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
             build
+            
+      - name: Find built .app
+        run: |
+          echo "Searching for .app..."
+          find platforms/ios -name "*.app" -type d
 
       # 👉 Package unsigned IPA manually
       - name: Package Unsigned IPA
