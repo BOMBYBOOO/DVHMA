@@ -32,6 +32,15 @@ jobs:
           cordova platform rm ios || true
           rm -rf platforms/ios
           cordova platform add ios --verbose
+      - name: List iOS folders
+        run: |
+          echo "------ ROOT ------"
+          ls -la
+          echo "------ platforms ------"
+          ls -la platforms || true
+          echo "------ platforms/ios ------"
+          ls -la platforms/ios || true
+
 
       # Build REAL DEVICE (ARM64) without signing
       - name: Build iOS App (Device, Unsigned)
