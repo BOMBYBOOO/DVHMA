@@ -30,6 +30,11 @@ jobs:
       - name: Build iOS Simulator
         run: |
           cordova build ios --emulator
+      - name: Find .app output
+        run: |
+          echo "Searching for .app files..."
+          find platforms/ios -name "*.app" -type d
+
 
       # ⭐ Package .app into unsigned .ipa
       - name: Create unsigned IPA
