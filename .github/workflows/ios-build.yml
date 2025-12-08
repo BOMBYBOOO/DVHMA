@@ -1,20 +1,28 @@
 name: Build iOS App (Cordova)
 
 on:
-  workflow_dispatch:   # Allow manual run
+  workflow_dispatch:
 
 jobs:
   build-ios:
     runs-on: macos-latest
 
-    # IMPORTANT: Run inside the Cordova project folder
     defaults:
       run:
-        working-directory: DVHMA-Featherweight
+        working-directory: ./DVHMA-Featherweight
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Verify directory structure
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "List:"
+          ls -la
+          echo "Inside DVHMA-Featherweight:"
+          ls -la ./DVHMA-Featherweight
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -40,7 +48,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ios-build
-          path: |
-            DVHMA-Featherweight/platforms/ios/build/*/**/*.ipa
-            DVHMA-Featherweight/platforms/ios/build/*/**/*.xcarchive
-
+          path: ./DVHMA-Featherweight/platforms/ios/build/*/**/*.ipa
