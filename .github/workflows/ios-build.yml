@@ -19,7 +19,7 @@ jobs:
         run: |
           echo "PWD:" 
           pwd
-          echo "Root:"
+          echo "Root folder:"
           ls -la ..
           echo "Project folder:"
           ls -la .
@@ -35,14 +35,22 @@ jobs:
       - name: Install project dependencies
         run: npm install
 
-      # ⭐ IMPORTANT: Build for DEVICE not SIMULATOR
-      - name: Build iOS release (unsigned IPA)
+      # ⭐ Build WITHOUT archiving (avoids code signing)
+      - name: Build iOS (device, unsigned)
         run: |
-          cordova build ios --release --device --no-sign
+          cordova build ios --device --buildFlag="-UseModernBuildSystem=0"
 
-      # ⭐ Upload the generated .ipa file
-      - name: Upload iOS IPA
+      # ⭐ Create unsigned IPA manually
+      - name: Package unsigned IPA
+        run: |
+          cd platforms/ios/build/device
+          mkdir Payload
+          cp -R App.app Payload/
+          zip -r Featherweight-DVHMA.ipa Payload
+
+      # ⭐ Upload IPA
+      - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
           name: ios-build
-          path: DVHMA-Featherweight/platforms/ios/build/device/*.ipa
+          path: DVHMA-Featherweight/platforms/ios/build/device/Featherweight-DVHMA.ipa
