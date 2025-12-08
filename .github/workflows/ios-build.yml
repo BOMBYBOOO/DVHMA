@@ -1,11 +1,16 @@
 name: Build iOS App (Cordova)
 
 on:
-  workflow_dispatch:   # You manually trigger it
+  workflow_dispatch:   # Allow manual run
 
 jobs:
   build-ios:
     runs-on: macos-latest
+
+    # IMPORTANT: Run inside the Cordova project folder
+    defaults:
+      run:
+        working-directory: DVHMA-Featherweight
 
     steps:
       - name: Checkout repository
@@ -16,7 +21,7 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install Cordova CLI
+      - name: Install Cordova CLI globally
         run: npm install -g cordova
 
       - name: Install project dependencies
@@ -31,10 +36,11 @@ jobs:
       - name: Build iOS release
         run: cordova build ios --release
 
-      - name: Upload IPA Artifacts
+      - name: Upload iOS Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ios-build
           path: |
-            platforms/ios/build/*/**/*.ipa
-            platforms/ios/build/*/**/*.xcarchive
+            DVHMA-Featherweight/platforms/ios/build/*/**/*.ipa
+            DVHMA-Featherweight/platforms/ios/build/*/**/*.xcarchive
+
