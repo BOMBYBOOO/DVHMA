@@ -1,42 +1,22 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="de.zertapps.dvhma.featherweight"
-        version="1.0.0"
-        xmlns="http://www.w3.org/ns/widgets"
-        xmlns:cdv="http://cordova.apache.org/ns/1.0">
-
+<widget id="de.zertapps.dvhma.featherweight" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Featherweight DVHMA</name>
-
     <author href="https://logicalhacking.com">Logical Hacking</author>
-
     <description>
         Damn Vulnerable Hybrid Mobile App (DVHMA) - Featherweight edition.
         Minimal hybrid app for security testing on Android and iOS.
     </description>
-
-    <!-- LAUNCH FILE -->
     <content src="index.html" />
-
-    <!-- ALLOW ALL ORIGINS -->
     <access origin="*" />
     <allow-navigation href="*" />
     <allow-intent href="*" />
-
-    <!-- REQUIRED FOR WKWEBVIEW -->
     <preference name="WKWebViewOnly" value="true" />
     <preference name="AllowInlineMediaPlayback" value="true" />
     <preference name="AllowFileAccessFromFileURLs" value="true" />
     <preference name="AllowUniversalAccessFromFileURLs" value="true" />
-
-    <!-- iOS SETTINGS -->
     <preference name="deployment-target" value="12.0" />
     <preference name="UseSwiftLanguageVersion" value="5" />
-
-    <!-- PLUGINS -->
     <plugin name="de.zertapps.dvhma.plugins.storage" spec="../plugins/DVHMA-Storage" />
     <plugin name="de.zertapps.dvhma.plugins.webintent" spec="../plugins/DVHMA-WebIntent" />
-
-    <!-- ENGINES -->
     <engine name="android" spec="~7.0.0" />
-    <engine name="ios" spec="^6.2.0" />
-
 </widget>
