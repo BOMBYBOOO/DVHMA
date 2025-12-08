@@ -7,32 +7,26 @@ jobs:
   build-ios:
     runs-on: macos-latest
 
-    defaults:
-      run:
-        working-directory: ./DVHMA-Featherweight
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Verify directory structure
+      - name: Print directory tree (debug)
         run: |
           echo "Current directory:"
           pwd
           echo "List:"
           ls -la
-          echo "Inside DVHMA-Featherweight:"
-          ls -la ./DVHMA-Featherweight
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Install Cordova CLI globally
+      - name: Install Cordova CLI
         run: npm install -g cordova
 
-      - name: Install project dependencies
+      - name: Install dependencies
         run: npm install
 
       - name: Add iOS platform if missing
@@ -44,8 +38,8 @@ jobs:
       - name: Build iOS release
         run: cordova build ios --release
 
-      - name: Upload iOS Artifacts
+      - name: Upload iOS IPA File
         uses: actions/upload-artifact@v4
         with:
           name: ios-build
-          path: ./DVHMA-Featherweight/platforms/ios/build/*/**/*.ipa
+          path: platforms/ios/build/*/**/*.ipa
