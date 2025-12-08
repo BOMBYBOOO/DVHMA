@@ -7,9 +7,9 @@ jobs:
   build-ios:
     runs-on: macos-latest
 
-    defaults:
-      run:
-        working-directory: DVHMA-Featherweight
+defaults:
+  run:
+    working-directory: DVHMA-Featherweight/platforms/ios
 
     steps:
       - name: Checkout repository
