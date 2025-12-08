@@ -9,7 +9,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: .
+        working-directory: DVHMA-Featherweight
 
     steps:
       - name: Checkout repository
