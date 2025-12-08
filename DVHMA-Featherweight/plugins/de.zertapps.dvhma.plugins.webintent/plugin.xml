@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://cordova.apache.org/ns/plugins/1.0"
+           id="de.zertapps.dvhma.plugins.webintent"
+      version="1.0.0">
+    <name>DVHMA WebIntent</name>
+    <description>Web intents for Cordova</description>
+    <license>MIT</license>
+    <keywords>cordova,webintent</keywords>
+
+    <js-module src="www/webintent.js" name="WebIntent">
+        <clobbers target="window.webintent" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="WebIntent" >
+                <param name="android-package" value="com.borismus.webintent.WebIntent"/>
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application/activity">
+                <intent-filter>
+                    <action android:name="android.intent.action.SEND" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                    <data android:mimeType="text/plain" />
+                </intent-filter>
+        </config-file>
+        <source-file src="src/android/WebIntent.java" target-dir="src/com/borismus/webintent" />
+    </platform>
+</plugin>
