@@ -15,37 +15,34 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Debug — show structure
+      - name: Debug folder structure
         run: |
-          echo "PWD:"
+          echo "PWD:" 
           pwd
-          echo "List root:"
+          echo "Root:"
           ls -la ..
-          echo "List project folder:"
+          echo "Project folder:"
           ls -la .
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Install Cordova globally
+      - name: Install Cordova CLI
         run: npm install -g cordova
 
-      - name: Install dependencies
+      - name: Install project dependencies
         run: npm install
 
-      - name: Add iOS platform if missing
+      # ⭐ IMPORTANT: Build for DEVICE not SIMULATOR
+      - name: Build iOS release (unsigned IPA)
         run: |
-          if [ ! -d "platforms/ios" ]; then
-            cordova platform add ios
-          fi
+          cordova build ios --release --device --no-sign
 
-      - name: Build iOS release
-        run: cordova build ios --release
-
-      - name: Upload IPA
+      # ⭐ Upload the generated .ipa file
+      - name: Upload iOS IPA
         uses: actions/upload-artifact@v4
         with:
           name: ios-build
-          path: platforms/ios/build/*/**/*.ipa
+          path: DVHMA-Featherweight/platforms/ios/build/device/*.ipa
