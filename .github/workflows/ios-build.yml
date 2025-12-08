@@ -48,21 +48,29 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             build
             
-      - name: Find built .app
+      - name: Locate built .app
         run: |
           echo "Searching for .app..."
           find platforms/ios -name "*.app" -type d
 
-      # 👉 Package unsigned IPA manually
-      - name: Package Unsigned IPA
+      - name: Package unsigned IPA
         run: |
-          cd platforms/ios/build/Release-iphoneos
+          APP_PATH=$(find platforms/ios -name "*.app" -type d | head -1)
+          
+          echo "Found app at: $APP_PATH"
+
+          if [ -z "$APP_PATH" ]; then
+            echo "ERROR: No .app found!"
+            exit 1
+          fi
+
           mkdir Payload
-          cp -R "Featherweight DVHMA.app" Payload/
+          cp -R "$APP_PATH" Payload/
+
           zip -r Featherweight-DVHMA-unsigned.ipa Payload
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
           name: ios-unsigned
-          path: platforms/ios/build/Release-iphoneos/Featherweight-DVHMA-unsigned.ipa
+          path: Featherweight-DVHMA-unsigned.ipa
