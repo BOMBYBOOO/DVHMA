@@ -1,4 +1,4 @@
-name: Build iOS App (Cordova, Unsigned Device IPA)
+name: Build iOS App (Cordova)
 
 on:
   workflow_dispatch:
@@ -12,44 +12,29 @@ jobs:
         working-directory: DVHMA-Featherweight
 
     steps:
-      # ------------------------------
-      # CHECKOUT REPO
-      # ------------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ------------------------------
-      # SETUP NODE
-      # ------------------------------
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      # ------------------------------
-      # INSTALL CORDOVA
-      # ------------------------------
       - name: Install Cordova CLI
         run: npm install -g cordova
 
-      # ------------------------------
-      # INSTALL PROJECT DEPENDENCIES
-      # ------------------------------
       - name: Install project dependencies
         run: npm install
 
-      # ------------------------------
-      # RE-ADD iOS PLATFORM (CLEAN)
-      # ------------------------------
-      - name: Prepare iOS platform
+      # Force recreate iOS platform (prevents missing workspace errors)
+      - name: Prepare iOS Platform
         run: |
           cordova platform rm ios || true
-          cordova platform add ios
+          rm -rf platforms/ios
+          cordova platform add ios --verbose
 
-      # ------------------------------
-      # BUILD USING XCODEBUILD (NO ARCHIVE, NO SIGNING)
-      # ------------------------------
-      - name: Build iOS App (unsigned device build)
+      # Build REAL DEVICE (ARM64) without signing
+      - name: Build iOS App (Device, Unsigned)
         run: |
           cd platforms/ios
           xcodebuild \
@@ -58,24 +43,19 @@ jobs:
             -configuration Release \
             -sdk iphoneos \
             -destination generic/platform=iOS \
-            build \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_IDENTITY=""
+            CODE_SIGN_IDENTITY="" \
+            build
 
-      # ------------------------------
-      # PACKAGE IPA MANUALLY
-      # ------------------------------
-      - name: Create unsigned IPA
+      # Create IPA manually
+      - name: Package unsigned IPA
         run: |
           cd platforms/ios/build/Release-iphoneos
           mkdir Payload
           cp -R "Featherweight DVHMA.app" Payload/
           zip -r Featherweight-DVHMA-unsigned.ipa Payload
 
-      # ------------------------------
-      # UPLOAD IPA ARTIFACT
-      # ------------------------------
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
