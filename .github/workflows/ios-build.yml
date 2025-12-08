@@ -31,7 +31,7 @@ jobs:
         run: |
           cordova build ios --emulator
 
-      # ⭐ Package .app into fake unsigned .ipa
+      # ⭐ Package .app into unsigned .ipa
       - name: Create unsigned IPA
         run: |
           cd platforms/ios/build/emulator
