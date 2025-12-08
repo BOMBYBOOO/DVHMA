@@ -36,7 +36,7 @@ jobs:
         run: |
           cd platforms/ios/build/emulator
           mkdir Payload
-          cp -R Featherweight\ DVHMA.app Payload/
+          cp -R App.app Payload/
           zip -r Featherweight-DVHMA-unsigned.ipa Payload
 
       - name: Upload IPA
