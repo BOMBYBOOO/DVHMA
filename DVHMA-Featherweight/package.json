@@ -1,0 +1,18 @@
+{
+  "devDependencies": {
+    "cordova-android": "~7.0.0",
+    "cordova-ios": "^8.0.0",
+    "de.zertapps.dvhma.plugins.storage": "file:../plugins/DVHMA-Storage",
+    "de.zertapps.dvhma.plugins.webintent": "file:../plugins/DVHMA-WebIntent"
+  },
+  "cordova": {
+    "platforms": [
+      "android",
+      "ios"
+    ],
+    "plugins": {
+      "de.zertapps.dvhma.plugins.storage": {},
+      "de.zertapps.dvhma.plugins.webintent": {}
+    }
+  }
+}
