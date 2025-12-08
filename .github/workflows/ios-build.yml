@@ -26,10 +26,10 @@ jobs:
       - name: Install project dependencies
         run: npm install
 
-      # ⭐ Build iOS Simulator (no signing required)
-      - name: Build iOS Simulator
+      # ⭐ Build iOS (no signing required)
+      - name: Build iOS
         run: |
-          cordova build ios --emulator
+          cordova build ios --device --release --no-sign
 
       # ⭐ Package .app into unsigned IPA
       - name: Create unsigned IPA
