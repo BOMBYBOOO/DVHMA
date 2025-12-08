@@ -7,14 +7,16 @@ jobs:
   build-ios:
     runs-on: macos-latest
 
-    defaults:
-      run:
-        working-directory: DVHMA-Featherweight
-
     steps:
+      # -----------------------------
+      # CHECKOUT
+      # -----------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # -----------------------------
+      # NODE + CORDOVA
+      # -----------------------------
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -26,15 +28,18 @@ jobs:
       - name: Install project dependencies
         run: npm install
 
-      - name: Recreate iOS Platform
+      # -----------------------------
+      # PLATFORM CLEAN + ADD (FIXES MISSING WORKSPACE)
+      # -----------------------------
+      - name: Prepare iOS Platform
         run: |
           cordova platform rm ios || true
           cordova platform add ios --verbose
-          echo "Listing platforms/ios:"
-          ls -la platforms/ios
 
-      # 👉 REAL device build (unsigned)
-      - name: Build iOS (Unsigned for Device)
+      # -----------------------------
+      # BUILD IOS (DEVICE UNSIGNED)
+      # -----------------------------
+      - name: Build iOS (Device, Unsigned)
         run: |
           cd platforms/ios
           xcodebuild \
@@ -47,30 +52,39 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
             build
-            
-      - name: Locate built .app
-        run: |
-          echo "Searching for .app..."
-          find platforms/ios -name "*.app" -type d
 
-      - name: Package unsigned IPA
+      # -----------------------------
+      # LOCATE THE BUILT .APP ANYWHERE
+      # -----------------------------
+      - name: Locate .app in DerivedData
         run: |
-          APP_PATH=$(find platforms/ios -name "*.app" -type d | head -1)
-          
+          echo "Searching for .app inside runner filesystem..."
+          find /Users/runner -path "*Release-iphoneos*" -name "*.app" -type d | tee app_path.txt
+
+      # -----------------------------
+      # PACKAGE IPA FROM FOUND .APP
+      # -----------------------------
+      - name: Create unsigned IPA
+        run: |
+          APP_PATH=$(cat app_path.txt | head -1)
           echo "Found app at: $APP_PATH"
 
           if [ -z "$APP_PATH" ]; then
-            echo "ERROR: No .app found!"
+            echo "ERROR: .app not found!"
             exit 1
           fi
 
+          rm -rf Payload
           mkdir Payload
           cp -R "$APP_PATH" Payload/
 
           zip -r Featherweight-DVHMA-unsigned.ipa Payload
 
-      - name: Upload IPA
+      # -----------------------------
+      # UPLOAD IPA
+      # -----------------------------
+      - name: Upload unsigned IPA
         uses: actions/upload-artifact@v4
         with:
-          name: ios-unsigned
+          name: dvhma-unsigned
           path: Featherweight-DVHMA-unsigned.ipa
