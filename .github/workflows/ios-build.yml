@@ -1,0 +1,40 @@
+name: Build iOS App (Cordova)
+
+on:
+  workflow_dispatch:   # You manually trigger it
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Cordova CLI
+        run: npm install -g cordova
+
+      - name: Install project dependencies
+        run: npm install
+
+      - name: Add iOS platform if missing
+        run: |
+          if [ ! -d "platforms/ios" ]; then
+            cordova platform add ios
+          fi
+
+      - name: Build iOS release
+        run: cordova build ios --release
+
+      - name: Upload IPA Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build
+          path: |
+            platforms/ios/build/*/**/*.ipa
+            platforms/ios/build/*/**/*.xcarchive
