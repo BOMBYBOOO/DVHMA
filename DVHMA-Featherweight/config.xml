@@ -6,23 +6,31 @@
         Damn Vulnerable Hybrid Mobile App (DVHMA) - Featherweight edition.
         Minimal hybrid app for security testing on Android and iOS.
     </description>
+
     <content src="index.html" />
     <access origin="*" />
     <allow-navigation href="*" />
     <allow-intent href="*" />
+
     <preference name="WKWebViewOnly" value="true" />
     <preference name="AllowInlineMediaPlayback" value="true" />
     <preference name="AllowFileAccessFromFileURLs" value="true" />
     <preference name="AllowUniversalAccessFromFileURLs" value="true" />
     <preference name="deployment-target" value="12.0" />
     <preference name="UseSwiftLanguageVersion" value="5" />
-    <!--
-    <plugin name="de.zertapps.dvhma.plugins.storage" spec="../plugins/DVHMA-Storage" />
-    <plugin name="de.zertapps.dvhma.plugins.webintent" spec="../plugins/DVHMA-WebIntent" />
-    -->
-    <plugin name="de.zertapps.dvhma.plugins.storage" spec="plugins/de.zertapps.dvhma.plugins.storage" />
-<plugin name="de.zertapps.dvhma.plugins.webintent" spec="plugins/de.zertapps.dvhma.plugins.webintent" />
 
+    <!-- Plugins -->
+    <plugin name="de.zertapps.dvhma.plugins.storage" spec="plugins/de.zertapps.dvhma.plugins.storage" />
+    <plugin name="de.zertapps.dvhma.plugins.webintent" spec="plugins/de.zertapps.dvhma.plugins.webintent" />
+
+    <!-- iOS plugin exposure -->
+    <feature name="DVHMAStorage">
+        <param name="ios-package" value="DVHMAStorage" />
+    </feature>
+
+    <feature name="WebIntent">
+        <param name="ios-package" value="WebIntent" />
+    </feature>
 
     <engine name="android" spec="~7.0.0" />
 </widget>
