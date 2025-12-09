@@ -10,7 +10,18 @@
                                              selector:@selector(onOpenURL:)
                                                  name:CDVPluginHandleOpenURLNotification
                                                object:nil];
+
+    // Check if Cordova already stored an initial URL
+    NSString *storedURL = [self.commandDelegate.settings objectForKey:@"url"];
+    if (storedURL && callback) {
+        CDVPluginResult *result =
+        [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                           messageAsString:storedURL];
+        [result setKeepCallback:@YES];
+        [self.commandDelegate sendPluginResult:result callbackId:callback.callbackId];
+    }
 }
+
 
 - (void)listen:(CDVInvokedUrlCommand *)command {
     callback = command;
