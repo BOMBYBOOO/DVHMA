@@ -25,6 +25,7 @@
     <!-- Plugins -->
     <plugin name="de.zertapps.dvhma.plugins.storage" spec="plugins/de.zertapps.dvhma.plugins.storage" />
     <plugin name="de.zertapps.dvhma.plugins.webintent" spec="plugins/de.zertapps.dvhma.plugins.webintent" />
+    <plugin name="de.zertapps.dvhma.plugins.deeplink" spec="plugins/de.zertapps.dvhma.plugins.deeplink" />
 
     <!-- iOS plugin exposure -->
     <feature name="DVHMAStorage">

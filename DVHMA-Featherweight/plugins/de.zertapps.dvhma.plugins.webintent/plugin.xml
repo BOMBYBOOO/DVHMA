@@ -39,15 +39,35 @@
     <!-- IOS PLATFORM -->
     <platform name="ios">
 
-        <config-file target="config.xml" parent="/*">
-            <feature name="WebIntent">
-                <param name="ios-package" value="WebIntent" />
-            </feature>
-        </config-file>
+    <config-file target="config.xml" parent="/*">
+        <feature name="WebIntent">
+            <param name="ios-package" value="WebIntent" />
+        </feature>
+    </config-file>
 
-        <header-file src="src/ios/WebIntent.h" />
-        <source-file src="src/ios/WebIntent.m" />
+    <header-file src="src/ios/WebIntent.h" />
+    <source-file src="src/ios/WebIntent.m" />
 
+    <!-- Add universal URL handler in AppDelegate -->
+    <config-file target="App/AppDelegate.swift" parent="/*">
+        <string>
+        // --- DVHMA Injected WebIntent Forwarder ---
+        override func application(_ app: UIApplication,
+                                  open url: URL,
+                                  options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+
+            NotificationCenter.default.post(
+                name: Notification.Name("CDVPluginHandleOpenURL"),
+                object: url
+            )
+            return true
+        }
+        // --- End Injected Code ---
+        </string>
+    </config-file>
+    
     </platform>
+
+
 
 </plugin>

@@ -7,8 +7,7 @@
   },
   "cordova": {
     "platforms": [
-      "android",
-      "ios"
+      "android"
     ],
     "plugins": {
       "de.zertapps.dvhma.plugins.storage": {},

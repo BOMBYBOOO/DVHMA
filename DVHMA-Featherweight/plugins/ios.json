@@ -9,9 +9,6 @@
   "installed_plugins": {
     "de.zertapps.dvhma.plugins.storage": {
       "PACKAGE_NAME": "de.zertapps.dvhma.featherweight"
-    },
-    "de.zertapps.dvhma.plugins.webintent": {
-      "PACKAGE_NAME": "de.zertapps.dvhma.featherweight"
     }
   },
   "dependent_plugins": {}
