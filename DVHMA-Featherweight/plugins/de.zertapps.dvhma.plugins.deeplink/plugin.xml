@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://cordova.apache.org/ns/plugins/1.0"
+        id="de.zertapps.dvhma.plugins.deeplink"
+        version="1.0.0">
+
+    <name>DVHMA DeepLink</name>
+    <description>Deep link handler for iOS</description>
+
+    <!-- JS -->
+    <js-module src="www/deeplink.js" name="DeepLink">
+        <clobbers target="deeplink" />
+    </js-module>
+
+    <platform name="ios">
+
+        <!-- Expose plugin to Cordova -->
+        <config-file target="config.xml" parent="/*">
+            <feature name="DeepLink">
+                <param name="ios-package" value="DeepLink" />
+            </feature>
+        </config-file>
+
+        <!-- Add URL scheme -->
+        <config-file target="*-Info.plist" parent="CFBundleURLTypes">
+            <array>
+                <dict>
+                    <key>CFBundleURLSchemes</key>
+                    <array>
+                        <string>dvhma</string>
+                    </array>
+                </dict>
+            </array>
+        </config-file>
+
+        <header-file src="src/ios/DeepLink.h" />
+        <source-file src="src/ios/DeepLink.m" />
+
+    </platform>
+
+</plugin>
