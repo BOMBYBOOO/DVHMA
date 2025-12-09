@@ -1,5 +1,8 @@
 #import <Cordova/CDV.h>
 
 @interface DeepLink : CDVPlugin
-- (void)listen:(CDVInvokedUrlCommand*)command;
+
+// This is the JS-exposed method
+- (void)listen:(CDVInvokedUrlCommand *)command;
+
 @end
