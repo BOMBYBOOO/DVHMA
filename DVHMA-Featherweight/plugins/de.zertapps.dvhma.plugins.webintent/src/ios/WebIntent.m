@@ -16,7 +16,6 @@
     NSURL *url = [notification object];
     if (!url) return;
 
-    // Parse deep link parameters into dictionary
     NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
 
@@ -24,10 +23,18 @@
         params[item.name] = item.value ?: @"";
     }
 
-    NSDictionary *result = @{
-        @"url": url.absoluteString,
-        @"data": params
-    };
+    // Map iOS params to Android-style extras
+    NSString *extraText = params[@"EXTRA_TEXT"];
+    NSString *extraSubject = params[@"EXTRA_SUBJECT"];
+
+    NSMutableDictionary *result = [NSMutableDictionary dictionary];
+    result[@"url"] = url.absoluteString;
+
+    NSMutableDictionary *extra = [NSMutableDictionary dictionary];
+    if (extraText) extra[@"EXTRA_TEXT"] = extraText;
+    if (extraSubject) extra[@"EXTRA_SUBJECT"] = extraSubject;
+
+    result[@"data"] = extra;
 
     if (pendingCommand != nil) {
         CDVPluginResult *pluginResult =
@@ -37,6 +44,7 @@
         [self.commandDelegate sendPluginResult:pluginResult callbackId:pendingCommand.callbackId];
     }
 }
+
 
 - (void)getIntent:(CDVInvokedUrlCommand*)command {
     pendingCommand = command;
