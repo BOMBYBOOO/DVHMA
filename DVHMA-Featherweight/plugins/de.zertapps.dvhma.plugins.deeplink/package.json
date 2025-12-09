@@ -1,0 +1,8 @@
+{
+  "name": "de.zertapps.dvhma.plugins.deeplink",
+  "version": "1.0.0",
+  "cordova": {
+    "id": "de.zertapps.dvhma.plugins.deeplink",
+    "platforms": ["ios"]
+  }
+}
