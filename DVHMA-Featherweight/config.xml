@@ -23,6 +23,20 @@
     <plugin name="de.zertapps.dvhma.plugins.storage" spec="plugins/de.zertapps.dvhma.plugins.storage" />
     <plugin name="de.zertapps.dvhma.plugins.webintent" spec="plugins/de.zertapps.dvhma.plugins.webintent" />
 
+    <!-- iOS URL Scheme for Deep Linking -->
+<platform name="ios">
+    <config-file parent="CFBundleURLTypes" target="*-Info.plist">
+        <array>
+            <dict>
+                <key>CFBundleURLSchemes</key>
+                <array>
+                    <string>dvhma</string>
+                </array>
+            </dict>
+        </array>
+    </config-file>
+</platform>
+
     <!-- iOS plugin exposure -->
     <feature name="DVHMAStorage">
         <param name="ios-package" value="DVHMAStorage" />
