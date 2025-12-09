@@ -8,7 +8,8 @@
 
 - (void)pluginInitialize
 {
-    // Capture URL parameters if app launched from custom URL scheme
+    NSLog(@"[WebIntent] pluginInitialize: Registering for openURL notifications");
+
     [[NSNotificationCenter defaultCenter]
         addObserver:self
            selector:@selector(onOpenURL:)
@@ -19,7 +20,10 @@
 - (void)onOpenURL:(NSNotification*)notification
 {
     NSURL *url = [notification object];
+    NSLog(@"[WebIntent] onOpenURL fired with URL: %@", url);
+
     self.launchParams = [self parseURL:url];
+    NSLog(@"[WebIntent] launchParams parsed = %@", self.launchParams);
 }
 
 - (NSDictionary *)parseURL:(NSURL*)url
@@ -27,6 +31,8 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
 
     NSString *query = url.query;
+    NSLog(@"[WebIntent] Raw query = %@", query);
+
     NSArray *parts = [query componentsSeparatedByString:@"&"];
 
     for (NSString *part in parts) {
@@ -35,37 +41,29 @@
             NSString *key = pair[0];
             NSString *value = pair[1];
             params[key] = value;
+            NSLog(@"[WebIntent] Added param: %@ = %@", key, value);
         }
     }
 
     return params;
 }
 
-#pragma mark - Cordova execute
-
 - (void)getExtra:(CDVInvokedUrlCommand*)command
 {
     NSString *key = [command.arguments objectAtIndex:0];
-
-    // If the app was not launched with an URL → behave like Android
-    if (!self.launchParams || self.launchParams.count == 0) {
-        CDVPluginResult *res =
-            [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                               messageAsString:@"No intent data"];
-        [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
-        return;
-    }
+    NSLog(@"[WebIntent] getExtra called for key: %@", key);
 
     NSString *val = self.launchParams[key];
+    NSLog(@"[WebIntent] getExtra result: %@", val);
 
     if (val) {
-        CDVPluginResult *res =
+        CDVPluginResult *result =
             [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:val];
-        [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
     } else {
-        CDVPluginResult *res =
+        CDVPluginResult *result =
             [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Not found"];
-        [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
     }
 }
 

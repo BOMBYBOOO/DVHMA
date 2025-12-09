@@ -15,6 +15,7 @@ static NSString * const kTableName = @"todos";
 }
 
 - (BOOL)openDatabase {
+    NSLog(@"[DB] Opening DB at: %@", dbPath);
     NSString *path = [self databasePath];
     int rc = sqlite3_open([path UTF8String], &_db);
     if (rc != SQLITE_OK) {
@@ -34,6 +35,7 @@ static NSString * const kTableName = @"todos";
 }
 
 - (NSArray *)queryAll {
+    NSLog(@"[DB] Read returned %lu rows", (unsigned long)[result count]);
     NSMutableArray *ret = [NSMutableArray array];
     const char *sql = "SELECT id, title, content FROM todos ORDER BY id ASC";
     sqlite3_stmt *stmt = NULL;
@@ -58,6 +60,7 @@ static NSString * const kTableName = @"todos";
 }
 
 - (BOOL)insertTitle:(NSString*)title content:(NSString*)content {
+    NSLog(@"[DB] Insert query executed");
     const char *sql = "INSERT INTO todos (title, content) VALUES (?, ?)";
     sqlite3_stmt *stmt = NULL;
     if (sqlite3_prepare_v2(_db, sql, -1, &stmt, NULL) != SQLITE_OK) {
@@ -73,6 +76,7 @@ static NSString * const kTableName = @"todos";
 }
 
 - (BOOL)updateId:(int)rowId title:(NSString*)title content:(NSString*)content {
+    NSLog(@"[DB] Update executed");
     const char *sql = "UPDATE todos SET title = ?, content = ? WHERE id = ?";
     sqlite3_stmt *stmt = NULL;
     if (sqlite3_prepare_v2(_db, sql, -1, &stmt, NULL) != SQLITE_OK) {
@@ -89,6 +93,7 @@ static NSString * const kTableName = @"todos";
 }
 
 - (BOOL)deleteId:(int)rowId {
+    NSLog(@"[DB] Delete executed");
     const char *sql = "DELETE FROM todos WHERE id = ?";
     sqlite3_stmt *stmt = NULL;
     if (sqlite3_prepare_v2(_db, sql, -1, &stmt, NULL) != SQLITE_OK) {
