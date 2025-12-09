@@ -12,7 +12,6 @@
 }
 
 - (void)create:(CDVInvokedUrlCommand*)command {
-    NSLog(@"[Storage] create called with args: %@", command.arguments);
     NSDictionary *obj = [command.arguments firstObject];
     NSString *title = obj[@"title"] ?: @"";
     NSString *content = obj[@"content"] ?: @"";
@@ -30,7 +29,6 @@
 }
 
 - (void)get:(CDVInvokedUrlCommand*)command {
-    NSLog(@"[Storage] get called");
     NSArray *all = [_dbHelper queryAll];
     CDVPluginResult* res = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:all];
     [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
@@ -38,7 +36,6 @@
 
 - (void)edit:(CDVInvokedUrlCommand*)command {
     // Android plugin expects index (int) then object {title,content}
-    NSLog(@"[Storage] edit called: %@", command.arguments);
     if (command.arguments.count < 2) {
         CDVPluginResult* res = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"invalid_args"];
         [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
@@ -74,7 +71,6 @@
 }
 
 - (void)delete:(CDVInvokedUrlCommand*)command {
-    NSLog(@"[Storage] delete called for ID: %@", ID);
     if (command.arguments.count < 1) {
         CDVPluginResult* res = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"invalid_args"];
         [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
