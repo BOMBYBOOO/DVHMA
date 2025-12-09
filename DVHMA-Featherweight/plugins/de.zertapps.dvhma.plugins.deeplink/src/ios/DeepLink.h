@@ -2,7 +2,6 @@
 
 @interface DeepLink : CDVPlugin
 
-// This is the JS-exposed method
-- (void)listen:(CDVInvokedUrlCommand *)command;
+- (void)listen:(CDVInvokedUrlCommand*)command;
 
 @end
