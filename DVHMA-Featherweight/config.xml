@@ -16,7 +16,13 @@
     <preference name="AllowUniversalAccessFromFileURLs" value="true" />
     <preference name="deployment-target" value="12.0" />
     <preference name="UseSwiftLanguageVersion" value="5" />
+    <!--
     <plugin name="de.zertapps.dvhma.plugins.storage" spec="../plugins/DVHMA-Storage" />
     <plugin name="de.zertapps.dvhma.plugins.webintent" spec="../plugins/DVHMA-WebIntent" />
+    -->
+    <plugin name="de.zertapps.dvhma.plugins.storage" spec="plugins/de.zertapps.dvhma.plugins.storage" />
+<plugin name="de.zertapps.dvhma.plugins.webintent" spec="plugins/de.zertapps.dvhma.plugins.webintent" />
+
+
     <engine name="android" spec="~7.0.0" />
 </widget>
