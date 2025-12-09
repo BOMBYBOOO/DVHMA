@@ -36,5 +36,5 @@
             </array>
         </config-file>
     </platform>
-    <engine name="android" spec="~7.0.0" />
+    <engine name="android" spec="~8.1.0" />
 </widget>
