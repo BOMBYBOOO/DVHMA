@@ -22,22 +22,37 @@ function logError(error) {
 }
 
 function checkForExtraText() {
-	window.webintent(window.webintent.EXTRA_TEXT, function(content) {
-		window.webintent(window.webintent.EXTRA_SUBJECT, function(title) {
-			var param = {};
-			param.title = title;
-			param.content = content;
-			window.todo.create([param], reloadItems, logError);
-		}, function(error) {
-			var param = {};
-			param.title = "NewTitle";
-			param.content = content;
-			window.todo.create([param], reloadItems, logError);
-		});
-	}, function(error) {
-		window.todo.get(reloadItems, logError);
-	});
+    try {
+        window.webintent(window.webintent.EXTRA_TEXT, function(content) {
+
+            window.webintent(window.webintent.EXTRA_SUBJECT, function(title) {
+                var param = { title: title, content: content };
+                window.todo.create([param], reloadItems, logError);
+
+            }, function(err2) {
+                var param = { title: "NewTitle", content: content };
+                window.todo.create([param], reloadItems, logError);
+            });
+
+        }, function(err1) {
+            // No WebIntent → load DB items
+            window.todo.get(function(items) {
+                reloadItems(items || []); // fallback if null
+            }, function() {
+                reloadItems([]); // DB error → empty list
+            });
+        });
+
+    } catch (e) {
+        // WebIntent plugin completely failed
+        window.todo.get(function(items) {
+            reloadItems(items || []);
+        }, function() {
+            reloadItems([]);
+        });
+    }
 }
+
 
 function onRemoveItem(e) {
 	window.todo.delete([e.target.parentNode.parentNode.dataset.id], reloadItems, logError);
