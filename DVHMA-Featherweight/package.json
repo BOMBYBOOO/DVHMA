@@ -1,17 +1,23 @@
 {
+  "name": "dvhma-featherweight",
+  "version": "1.0.0",
+  "displayName": "DVHMA Featherweight",
+  "cordova": {
+    "plugins": {
+      "de.zertapps.dvhma.plugins.deeplink": {},
+      "de.zertapps.dvhma.plugins.webintent": {},
+      "de.zertapps.dvhma.plugins.storage": {}
+    },
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
   "devDependencies": {
     "cordova-android": "~7.0.0",
     "cordova-ios": "^8.0.0",
-    "de.zertapps.dvhma.plugins.storage": "file:../plugins/DVHMA-Storage",
-    "de.zertapps.dvhma.plugins.webintent": "file:../plugins/DVHMA-WebIntent"
-  },
-  "cordova": {
-    "platforms": [
-      "android"
-    ],
-    "plugins": {
-      "de.zertapps.dvhma.plugins.storage": {},
-      "de.zertapps.dvhma.plugins.webintent": {}
-    }
+    "de.zertapps.dvhma.plugins.deeplink": "file:plugins/de.zertapps.dvhma.plugins.deeplink",
+    "de.zertapps.dvhma.plugins.storage": "file:plugins/de.zertapps.dvhma.plugins.storage",
+    "de.zertapps.dvhma.plugins.webintent": "file:plugins/de.zertapps.dvhma.plugins.webintent"
   }
 }

@@ -1,8 +1,8 @@
 {
-  "de.zertapps.dvhma.plugins.storage": {
+  "de.zertapps.dvhma.plugins.deeplink": {
     "source": {
       "type": "local",
-      "path": "node_modules/de.zertapps.dvhma.plugins.storage"
+      "path": "node_modules/de.zertapps.dvhma.plugins.deeplink"
     },
     "is_top_level": true,
     "variables": {}
@@ -11,6 +11,14 @@
     "source": {
       "type": "local",
       "path": "node_modules/de.zertapps.dvhma.plugins.webintent"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "de.zertapps.dvhma.plugins.storage": {
+    "source": {
+      "type": "local",
+      "path": "node_modules/de.zertapps.dvhma.plugins.storage"
     },
     "is_top_level": true,
     "variables": {}

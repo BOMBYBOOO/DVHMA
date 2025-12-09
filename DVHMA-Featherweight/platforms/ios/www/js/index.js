@@ -17,7 +17,22 @@ function onDeviceReady() {
 	console.log("[DVHMA] device ready fired");
 	listenForIOSIntent();
 	checkForExtraText();
+	deeplink.listen(function(url){
+    console.log("[DeepLink] Received URL:", url);
+
+    let p = new URL(url).searchParams;
+
+    let title = p.get("EXTRA_SUBJECT");
+    let content = p.get("EXTRA_TEXT");
+
+    if (title || content) {
+        window.todo.create([{ title, content }], reloadItems, logError);
+    }
+
+}, logError);
+
 }
+
 
 function listenForIOSIntent() {
     window.webintent.getIntent(function(intent) {

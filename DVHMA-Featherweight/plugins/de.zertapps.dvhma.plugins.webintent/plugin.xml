@@ -39,34 +39,22 @@
     <!-- IOS PLATFORM -->
     <platform name="ios">
 
+    <!-- Register Cordova plugin -->
     <config-file target="config.xml" parent="/*">
         <feature name="WebIntent">
             <param name="ios-package" value="WebIntent" />
         </feature>
     </config-file>
 
+    <!-- Include Objective-C sources -->
     <header-file src="src/ios/WebIntent.h" />
     <source-file src="src/ios/WebIntent.m" />
 
-    <!-- Add universal URL handler in AppDelegate -->
-    <config-file target="App/AppDelegate.swift" parent="/*">
-        <string>
-        // --- DVHMA Injected WebIntent Forwarder ---
-        override func application(_ app: UIApplication,
-                                  open url: URL,
-                                  options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    <!-- DO NOT inject into AppDelegate (handled by Deeplink plugin) -->
+    <!-- DO NOT touch SceneDelegate -->
 
-            NotificationCenter.default.post(
-                name: Notification.Name("CDVPluginHandleOpenURL"),
-                object: url
-            )
-            return true
-        }
-        // --- End Injected Code ---
-        </string>
-    </config-file>
-    
-    </platform>
+</platform>
+
 
 
 

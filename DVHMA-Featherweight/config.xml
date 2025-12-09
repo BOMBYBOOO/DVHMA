@@ -1,42 +1,29 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="de.zertapps.dvhma.featherweight" version="1.0.0"
-    xmlns="http://www.w3.org/ns/widgets"
-    xmlns:cdv="http://cordova.apache.org/ns/1.0">
-
+<widget id="de.zertapps.dvhma.featherweight" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Featherweight DVHMA</name>
     <author href="https://logicalhacking.com">Logical Hacking</author>
     <description>
         Damn Vulnerable Hybrid Mobile App (DVHMA) - Featherweight edition.
         Minimal hybrid app for security testing on Android and iOS.
     </description>
-
     <content src="index.html" />
     <access origin="*" />
     <allow-navigation href="*" />
     <allow-intent href="*" />
-
     <preference name="WKWebViewOnly" value="true" />
     <preference name="AllowInlineMediaPlayback" value="true" />
     <preference name="AllowFileAccessFromFileURLs" value="true" />
     <preference name="AllowUniversalAccessFromFileURLs" value="true" />
     <preference name="deployment-target" value="12.0" />
     <preference name="UseSwiftLanguageVersion" value="5" />
-
-    <!-- Plugins -->
     <plugin name="de.zertapps.dvhma.plugins.storage" spec="plugins/de.zertapps.dvhma.plugins.storage" />
     <plugin name="de.zertapps.dvhma.plugins.webintent" spec="plugins/de.zertapps.dvhma.plugins.webintent" />
-    <plugin name="de.zertapps.dvhma.plugins.deeplink" spec="plugins/de.zertapps.dvhma.plugins.deeplink" />
-
-    <!-- iOS plugin exposure -->
     <feature name="DVHMAStorage">
         <param name="ios-package" value="DVHMAStorage" />
     </feature>
-
     <feature name="WebIntent">
         <param name="ios-package" value="WebIntent" />
     </feature>
-
-    <!-- iOS URL Scheme for Deep Linking -->
     <platform name="ios">
         <config-file parent="CFBundleURLTypes" target="*-Info.plist">
             <array>
@@ -49,7 +36,5 @@
             </array>
         </config-file>
     </platform>
-
     <engine name="android" spec="~7.0.0" />
-
 </widget>
