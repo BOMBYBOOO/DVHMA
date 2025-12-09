@@ -29,6 +29,9 @@
         <param name="ios-package" value="CDVStatusBarInternal" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="DVHMAStorage">
+        <param name="ios-package" value="DVHMAStorage" />
+    </feature>
     <feature name="WebIntent">
         <param name="ios-package" value="WebIntent" />
     </feature>

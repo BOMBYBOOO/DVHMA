@@ -9,6 +9,10 @@
         "parents": {
           "/*": [
             {
+              "xml": "<feature name=\"DVHMAStorage\"><param name=\"ios-package\" value=\"DVHMAStorage\" /></feature>",
+              "count": 1
+            },
+            {
               "xml": "<feature name=\"WebIntent\"><param name=\"ios-package\" value=\"WebIntent\" /></feature>",
               "count": 1
             }
