@@ -54,7 +54,7 @@
       "file": "plugins/de.zertapps.dvhma.plugins.webintent/www/webintent.js",
       "pluginId": "de.zertapps.dvhma.plugins.webintent",
       "clobbers": [
-        "WebIntent"
+        "webintent"
       ]
     }
   ],

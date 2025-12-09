@@ -11,7 +11,7 @@
 
     <!-- JS module -->
     <js-module src="www/webintent.js" name="WebIntent">
-        <clobbers target="WebIntent" />
+        <clobbers target="webintent" />
     </js-module>
 
     <!-- ANDROID PLATFORM -->
