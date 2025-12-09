@@ -18,3 +18,16 @@ version="1.0.0">
 	<source-file src="src/android/DVHMAStorageDbHelper.java" target-dir="src/de/zertapps/dvhma/plugins/storage/" />
 </platform>
 </plugin>
+<!-- ios -->
+<platform name="ios">
+    <config-file target="config.xml" parent="/*">
+        <feature name="DVHMAStorage">
+            <param name="ios-package" value="DVHMAStorage" />
+        </feature>
+    </config-file>
+
+    <source-file src="src/ios/DVHMAStorage.m" />
+    <source-file src="src/ios/DVHMAStorage.h" />
+    <source-file src="src/ios/DVHMAStorageDbHelper.m" />
+    <source-file src="src/ios/DVHMAStorageDbHelper.h" />
+</platform>

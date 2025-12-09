@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="de.zertapps.dvhma.featherweight" version="1.0.0-6.3.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="de.zertapps.dvhma.featherweight" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <feature name="CDVWebViewEngine">
         <param name="ios-package" value="CDVWebViewEngine" />
     </feature>
@@ -29,16 +29,20 @@
         <param name="ios-package" value="CDVStatusBarInternal" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="WebIntent">
+        <param name="ios-package" value="WebIntent" />
+    </feature>
     <name>Featherweight DVHMA</name>
-    <author href="https://logicalhacking.com" />
+    <author href="https://logicalhacking.com">Logical Hacking</author>
     <description>
-        Damn Vulnerable Hybrid Mobile App (DVHMA) is an hybrid mobile app (for Android) that intentionally contains vulnerabilities. 
-
-	This version of DVHMA, called Featherweight DVHMA, is designed to be a small as possible (e.g., avoiding large UI libraries such as Open UI5) while still beeing useful for security researchers.
+        Damn Vulnerable Hybrid Mobile App (DVHMA) - Featherweight edition.
+        Minimal hybrid app for security testing on Android and iOS.
     </description>
     <content src="index.html" />
     <access origin="*" />
-    <preference name="AllowInlineMediaPlayback" value="false" />
+    <allow-navigation href="*" />
+    <allow-intent href="*" />
+    <preference name="AllowInlineMediaPlayback" value="true" />
     <preference name="DisallowOverscroll" value="false" />
     <preference name="EnableViewportScale" value="false" />
     <preference name="MediaPermissionGrantType" value="grantIfSameHostElsePrompt" />
@@ -46,4 +50,9 @@
     <preference name="SuppressesIncrementalRendering" value="false" />
     <preference name="SuppressesLongPressGesture" value="false" />
     <preference name="Suppresses3DTouchGesture" value="false" />
+    <preference name="WKWebViewOnly" value="true" />
+    <preference name="AllowFileAccessFromFileURLs" value="true" />
+    <preference name="AllowUniversalAccessFromFileURLs" value="true" />
+    <preference name="deployment-target" value="12.0" />
+    <preference name="UseSwiftLanguageVersion" value="5" />
 </widget>

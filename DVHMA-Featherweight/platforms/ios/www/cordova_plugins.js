@@ -13,7 +13,7 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "file": "plugins/de.zertapps.dvhma.plugins.webintent/www/webintent.js",
       "pluginId": "de.zertapps.dvhma.plugins.webintent",
       "clobbers": [
-        "window.webintent"
+        "WebIntent"
       ]
     }
   ];

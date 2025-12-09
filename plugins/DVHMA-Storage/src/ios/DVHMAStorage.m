@@ -1,152 +1,102 @@
-#import <Cordova/CDV.h>
-#import <sqlite3.h>
+#import "DVHMAStorage.h"
+#import "DVHMAStorageDbHelper.h"
 
-@interface DVHMAStorage : CDVPlugin {
-    sqlite3 *db;
+@implementation DVHMAStorage {
+    DVHMAStorageDbHelper *_dbHelper;
 }
-@end
-
-@implementation DVHMAStorage
 
 - (void)pluginInitialize {
-    [self openDatabase];
-    [self createTableIfNeeded];
-}
-
-#pragma mark - SQLite Helpers
-
-- (NSString *)dbPath {
-    NSString *docs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-    return [docs stringByAppendingPathComponent:@"dvhma.db"];
-}
-
-- (void)openDatabase {
-    if (sqlite3_open([[self dbPath] UTF8String], &db) != SQLITE_OK) {
-        NSLog(@"[DVHMAStorage] Failed to open DB");
-    }
-}
-
-- (void)createTableIfNeeded {
-    const char *sql =
-        "CREATE TABLE IF NOT EXISTS storage ("
-        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "title TEXT,"
-        "content TEXT"
-        ");";
-
-    char *errMsg;
-    sqlite3_exec(db, sql, NULL, NULL, &errMsg);
-}
-
-#pragma mark - Cordova entry point
-
-- (void)executeSQL:(NSString *)query {
-    char *errMsg;
-    sqlite3_exec(db, [query UTF8String], NULL, NULL, &errMsg);
-}
-
-- (NSArray *)selectAll {
-    NSMutableArray *result = [NSMutableArray array];
-
-    const char *sql = "SELECT id,title,content FROM storage;";
-    sqlite3_stmt *stmt;
-
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
-        while (sqlite3_step(stmt) == SQLITE_ROW) {
-
-            const char *t = (const char *)sqlite3_column_text(stmt, 1);
-            const char *c = (const char *)sqlite3_column_text(stmt, 2);
-
-            NSString *title = t ? [NSString stringWithUTF8String:t] : @"";
-            NSString *content = c ? [NSString stringWithUTF8String:c] : @"";
-
-            [result addObject:@{
-                @"title": title,
-                @"content": content
-            }];
-        }
-    }
-
-    sqlite3_finalize(stmt);
-
-    return result;
-}
-
-#pragma mark - Plugin methods
-
-- (void)get:(CDVInvokedUrlCommand*)command {
-    NSArray *items = [self selectAll];
-    CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:items];
-    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    [super pluginInitialize];
+    _dbHelper = [[DVHMAStorageDbHelper alloc] init];
+    [_dbHelper openDatabase]; // ensure DB/table exists
 }
 
 - (void)create:(CDVInvokedUrlCommand*)command {
+    NSDictionary *obj = [command.arguments firstObject];
+    NSString *title = obj[@"title"] ?: @"";
+    NSString *content = obj[@"content"] ?: @"";
 
-    NSDictionary *obj = [command.arguments objectAtIndex:0];
-
-    NSString *title = obj[@"title"];
-    NSString *content = obj[@"content"];
-
-    NSString *sql = [NSString stringWithFormat:
-        @"INSERT INTO storage (title,content) VALUES('%@','%@');",
-        title, content
-    ];
-
-    [self executeSQL:sql];
-
-    // return updated list
-    [self get:command];
-}
-
-- (void)delete:(CDVInvokedUrlCommand*)command {
-    int index = [[command.arguments objectAtIndex:0] intValue];
-
-    NSArray *rows = [self selectAll];
-    if (index < 0 || index >= rows.count) {
-        CDVPluginResult *error = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Index out of range"];
-        [self.commandDelegate sendPluginResult:error callbackId:command.callbackId];
+    BOOL ok = [_dbHelper insertTitle:title content:content];
+    if (!ok) {
+        CDVPluginResult* res = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"insert_failed"];
+        [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
         return;
     }
 
-    // Re-fetch ID by index (same logic as Android plugin)
-    NSString *title = rows[index][@"title"];
-    NSString *content = rows[index][@"content"];
+    NSArray *all = [_dbHelper queryAll];
+    CDVPluginResult* res = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:all];
+    [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
+}
 
-    NSString *sql = [NSString stringWithFormat:
-        @"DELETE FROM storage WHERE title='%@' AND content='%@';",
-        title, content
-    ];
-
-    [self executeSQL:sql];
-
-    [self get:command];
+- (void)get:(CDVInvokedUrlCommand*)command {
+    NSArray *all = [_dbHelper queryAll];
+    CDVPluginResult* res = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:all];
+    [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
 }
 
 - (void)edit:(CDVInvokedUrlCommand*)command {
-    int index = [[command.arguments objectAtIndex:0] intValue];
-
-    NSDictionary *updated = [command.arguments objectAtIndex:1];
-    NSString *newTitle = updated[@"title"];
-    NSString *newContent = updated[@"content"];
-
-    NSArray *rows = [self selectAll];
-    if (index < 0 || index >= rows.count) {
-        CDVPluginResult *error = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Index out of range"];
-        [self.commandDelegate sendPluginResult:error callbackId:command.callbackId];
+    // Android plugin expects index (int) then object {title,content}
+    if (command.arguments.count < 2) {
+        CDVPluginResult* res = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"invalid_args"];
+        [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
         return;
     }
 
-    NSString *oldTitle = rows[index][@"title"];
-    NSString *oldContent = rows[index][@"content"];
+    NSNumber *indexNum = command.arguments[0];
+    NSDictionary *obj = command.arguments[1];
+    NSString *title = obj[@"title"] ?: @"";
+    NSString *content = obj[@"content"] ?: @"";
 
-    NSString *sql = [NSString stringWithFormat:
-        @"UPDATE storage SET title='%@', content='%@' WHERE title='%@' AND content='%@';",
-        newTitle, newContent, oldTitle, oldContent
-    ];
+    // Android plugin used index as position in result set; replicate that behaviour:
+    NSArray *rows = [_dbHelper queryAll];
+    NSInteger idx = [indexNum integerValue];
+    if (idx < 0 || idx >= rows.count) {
+        CDVPluginResult* res = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"index_out_of_bounds"];
+        [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
+        return;
+    }
 
-    [self executeSQL:sql];
+    // rows are dictionaries with "id" key
+    NSNumber *rowId = rows[idx][@"id"];
+    BOOL ok = [_dbHelper updateId:[rowId intValue] title:title content:content];
+    if (!ok) {
+        CDVPluginResult* res = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"update_failed"];
+        [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
+        return;
+    }
 
-    [self get:command];
+    NSArray *all = [_dbHelper queryAll];
+    CDVPluginResult* res = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:all];
+    [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
+}
+
+- (void)delete:(CDVInvokedUrlCommand*)command {
+    if (command.arguments.count < 1) {
+        CDVPluginResult* res = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"invalid_args"];
+        [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
+        return;
+    }
+
+    NSNumber *indexNum = command.arguments[0];
+    NSArray *rows = [_dbHelper queryAll];
+    NSInteger idx = [indexNum integerValue];
+    if (idx < 0 || idx >= rows.count) {
+        CDVPluginResult* res = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"index_out_of_bounds"];
+        [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
+        return;
+    }
+
+    NSNumber *rowId = rows[idx][@"id"];
+    BOOL ok = [_dbHelper deleteId:[rowId intValue]];
+    if (!ok) {
+        CDVPluginResult* res = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"delete_failed"];
+        [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
+        return;
+    }
+
+    NSArray *all = [_dbHelper queryAll];
+    CDVPluginResult* res = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:all];
+    [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
 }
 
 @end

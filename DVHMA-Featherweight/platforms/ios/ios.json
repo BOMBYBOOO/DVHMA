@@ -4,7 +4,18 @@
     "uninstalled": []
   },
   "config_munge": {
-    "files": {}
+    "files": {
+      "config.xml": {
+        "parents": {
+          "/*": [
+            {
+              "xml": "<feature name=\"WebIntent\"><param name=\"ios-package\" value=\"WebIntent\" /></feature>",
+              "count": 1
+            }
+          ]
+        }
+      }
+    }
   },
   "installed_plugins": {
     "de.zertapps.dvhma.plugins.storage": {
@@ -29,7 +40,7 @@
       "file": "plugins/de.zertapps.dvhma.plugins.webintent/www/webintent.js",
       "pluginId": "de.zertapps.dvhma.plugins.webintent",
       "clobbers": [
-        "window.webintent"
+        "WebIntent"
       ]
     }
   ],
