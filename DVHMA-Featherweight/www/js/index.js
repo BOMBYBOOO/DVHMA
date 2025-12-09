@@ -17,20 +17,33 @@ function onDeviceReady() {
 	console.log("[DVHMA] device ready fired");
 	listenForIOSIntent();
 	checkForExtraText();
-	deeplink.listen(function(url){
+	deeplink.listen(function(url) {
     console.log("[DeepLink] Received URL:", url);
 
-    let p = new URL(url).searchParams;
+    try {
+        const parsed = new URL(url);
+        const params = parsed.searchParams;
 
-    let title = p.get("EXTRA_SUBJECT");
-    let content = p.get("EXTRA_TEXT");
+        const title = params.get("EXTRA_SUBJECT");
+        const content = params.get("EXTRA_TEXT");
 
-    if (title || content) {
-        window.todo.create([{ title, content }], reloadItems, logError);
+        if (title || content) {
+            window.todo.create([{ title, content }], function() {
+                console.log("[DeepLink] Saved. Reloading list...");
+                window.todo.get(reloadItems, logError);
+            }, logError);
+        } else {
+            // URL is valid but no params → still reload
+            window.todo.get(reloadItems, logError);
+        }
+
+    } catch (e) {
+        // Fails if URL isn't absolute (Cordova plugin sometimes sends a plain string)
+        console.log("[DeepLink] ERROR parsing URL:", e, "url was:", url);
+        window.todo.get(reloadItems, logError);
     }
 
 }, logError);
-
 
 }
 
