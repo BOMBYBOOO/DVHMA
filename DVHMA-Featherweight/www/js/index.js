@@ -15,7 +15,28 @@
 
 function onDeviceReady() {
 	console.log("[DVHMA] device ready fired");
+	listenForIOSIntent();
 	checkForExtraText();
+}
+
+function listenForIOSIntent() {
+    window.webintent.getIntent(function(intent) {
+
+        if (!intent || !intent.data) return;
+
+        var params = intent.data;
+
+        // If we received title/content → save it into DB
+        if (params.title || params.content) {
+            var item = {
+                title: params.title || "NoTitle",
+                content: params.content || "NoContent"
+            };
+
+            window.todo.create([item], reloadItems, logError);
+        }
+
+    }, logError);
 }
 
 function logError(error) {
