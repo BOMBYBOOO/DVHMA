@@ -18,9 +18,9 @@
 		90CBB52A2C06968500B805A2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90CBB5292C06968500B805A2 /* SceneDelegate.swift */; };
 		90CBB52C2C06968500B805A2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90CBB52B2C06968500B805A2 /* ViewController.swift */; };
 		90D82ABD2CF19AEA001383CF /* CordovaPlugins in Frameworks */ = {isa = PBXBuildFile; productRef = 90D82ABC2CF19AEA001383CF /* CordovaPlugins */; };
-		7F67AD660B804E4CB6FC4719 /* DVHMAStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EC95EAAF506412A8BBB6C65 /* DVHMAStorage.m */; };
-		620323C8832F4AD5949109EA /* DVHMAStorageDbHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A3DAFE07EB48E280086AB6 /* DVHMAStorageDbHelper.m */; };
-		FD1A7A388A3B43E19B67E62D /* WebIntent.m in Sources */ = {isa = PBXBuildFile; fileRef = 24D43A24087F48808C11F3DC /* WebIntent.m */; };
+		746E9193C71D4FD780D5E456 /* DVHMAStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C667645ADB74310970F8902 /* DVHMAStorage.m */; };
+		357592426C414079B1206C6E /* DVHMAStorageDbHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F5BCEB2521614728BCBDCC67 /* DVHMAStorageDbHelper.m */; };
+		166FD954CE8646129CAE4269 /* WebIntent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5453FC8924CA40FD8E9A961D /* WebIntent.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -59,12 +59,12 @@
 		90EB30402C6DD87600CEEB2F /* build-release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "build-release.xcconfig"; path = "cordova/build-release.xcconfig"; sourceTree = SOURCE_ROOT; };
 		90F7E7002C6EB78900AD84C2 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		90F7E7012C6EB78900AD84C2 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
-		9EC95EAAF506412A8BBB6C65 /* DVHMAStorage.m */ = {isa = PBXFileReference; name = "DVHMAStorage.m"; path = "de.zertapps.dvhma.plugins.storage/DVHMAStorage.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; includeInIndex = 0; };
-		F3A3DAFE07EB48E280086AB6 /* DVHMAStorageDbHelper.m */ = {isa = PBXFileReference; name = "DVHMAStorageDbHelper.m"; path = "de.zertapps.dvhma.plugins.storage/DVHMAStorageDbHelper.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; includeInIndex = 0; };
-		9C903BC0A11545F4A1F2099C /* DVHMAStorage.h */ = {isa = PBXFileReference; name = "DVHMAStorage.h"; path = "de.zertapps.dvhma.plugins.storage/DVHMAStorage.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; includeInIndex = 0; };
-		D1ED5DBAE20C4765AD6DE85D /* DVHMAStorageDbHelper.h */ = {isa = PBXFileReference; name = "DVHMAStorageDbHelper.h"; path = "de.zertapps.dvhma.plugins.storage/DVHMAStorageDbHelper.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; includeInIndex = 0; };
-		24D43A24087F48808C11F3DC /* WebIntent.m */ = {isa = PBXFileReference; name = "WebIntent.m"; path = "de.zertapps.dvhma.plugins.webintent/WebIntent.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; includeInIndex = 0; };
-		65938BA547904D74A92D2E23 /* WebIntent.h */ = {isa = PBXFileReference; name = "WebIntent.h"; path = "de.zertapps.dvhma.plugins.webintent/WebIntent.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; includeInIndex = 0; };
+		0C667645ADB74310970F8902 /* DVHMAStorage.m */ = {isa = PBXFileReference; name = "DVHMAStorage.m"; path = "de.zertapps.dvhma.plugins.storage/DVHMAStorage.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; includeInIndex = 0; };
+		F5BCEB2521614728BCBDCC67 /* DVHMAStorageDbHelper.m */ = {isa = PBXFileReference; name = "DVHMAStorageDbHelper.m"; path = "de.zertapps.dvhma.plugins.storage/DVHMAStorageDbHelper.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; includeInIndex = 0; };
+		E4FB36F15A944E5A8C7C6980 /* DVHMAStorage.h */ = {isa = PBXFileReference; name = "DVHMAStorage.h"; path = "de.zertapps.dvhma.plugins.storage/DVHMAStorage.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; includeInIndex = 0; };
+		1B5221D41E6E4AB3981CD6B0 /* DVHMAStorageDbHelper.h */ = {isa = PBXFileReference; name = "DVHMAStorageDbHelper.h"; path = "de.zertapps.dvhma.plugins.storage/DVHMAStorageDbHelper.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; includeInIndex = 0; };
+		5453FC8924CA40FD8E9A961D /* WebIntent.m */ = {isa = PBXFileReference; name = "WebIntent.m"; path = "de.zertapps.dvhma.plugins.webintent/WebIntent.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; includeInIndex = 0; };
+		F66D5A61F59742B691D9AE63 /* WebIntent.h */ = {isa = PBXFileReference; name = "WebIntent.h"; path = "de.zertapps.dvhma.plugins.webintent/WebIntent.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,12 +90,12 @@
 		907F98542C06B85800D2D242 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
-				9EC95EAAF506412A8BBB6C65 /* DVHMAStorage.m */,
-				F3A3DAFE07EB48E280086AB6 /* DVHMAStorageDbHelper.m */,
-				9C903BC0A11545F4A1F2099C /* DVHMAStorage.h */,
-				D1ED5DBAE20C4765AD6DE85D /* DVHMAStorageDbHelper.h */,
-				24D43A24087F48808C11F3DC /* WebIntent.m */,
-				65938BA547904D74A92D2E23 /* WebIntent.h */,
+				0C667645ADB74310970F8902 /* DVHMAStorage.m */,
+				F5BCEB2521614728BCBDCC67 /* DVHMAStorageDbHelper.m */,
+				E4FB36F15A944E5A8C7C6980 /* DVHMAStorage.h */,
+				1B5221D41E6E4AB3981CD6B0 /* DVHMAStorageDbHelper.h */,
+				5453FC8924CA40FD8E9A961D /* WebIntent.m */,
+				F66D5A61F59742B691D9AE63 /* WebIntent.h */,
 			);
 			path = Plugins;
 			sourceTree = "<group>";
@@ -257,9 +257,9 @@
 				90CBB52C2C06968500B805A2 /* ViewController.swift in Sources */,
 				90CBB5282C06968500B805A2 /* AppDelegate.swift in Sources */,
 				90CBB52A2C06968500B805A2 /* SceneDelegate.swift in Sources */,
-				7F67AD660B804E4CB6FC4719 /* DVHMAStorage.m in Sources */,
-				620323C8832F4AD5949109EA /* DVHMAStorageDbHelper.m in Sources */,
-				FD1A7A388A3B43E19B67E62D /* WebIntent.m in Sources */,
+				746E9193C71D4FD780D5E456 /* DVHMAStorage.m in Sources */,
+				357592426C414079B1206C6E /* DVHMAStorageDbHelper.m in Sources */,
+				166FD954CE8646129CAE4269 /* WebIntent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

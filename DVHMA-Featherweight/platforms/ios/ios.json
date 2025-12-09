@@ -5,6 +5,16 @@
   },
   "config_munge": {
     "files": {
+      "*-Info.plist": {
+        "parents": {
+          "CFBundleURLTypes": [
+            {
+              "xml": "<array><dict><key>CFBundleURLSchemes</key><array><string>dvhma</string></array></dict></array>",
+              "count": 3
+            }
+          ]
+        }
+      },
       "config.xml": {
         "parents": {
           "/*": [
