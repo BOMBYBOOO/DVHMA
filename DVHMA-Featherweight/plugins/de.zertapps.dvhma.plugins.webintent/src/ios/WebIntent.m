@@ -1,70 +1,52 @@
+#import "WebIntent.h"
 #import <Cordova/CDV.h>
 
-@interface WebIntent : CDVPlugin
-@property (nonatomic, strong) NSDictionary *launchParams;
-@end
-
-@implementation WebIntent
-
-- (void)pluginInitialize
-{
-    NSLog(@"[WebIntent] pluginInitialize: Registering for openURL notifications");
-
-    [[NSNotificationCenter defaultCenter]
-        addObserver:self
-           selector:@selector(onOpenURL:)
-               name:CDVPluginHandleOpenURLNotification
-             object:nil];
+@implementation WebIntent {
+    CDVInvokedUrlCommand *pendingCommand;
 }
 
-- (void)onOpenURL:(NSNotification*)notification
-{
+- (void)pluginInitialize {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleOpenURL:)
+                                                 name:CDVPluginHandleOpenURLNotification
+                                               object:nil];
+}
+
+- (void)handleOpenURL:(NSNotification*)notification {
     NSURL *url = [notification object];
-    NSLog(@"[WebIntent] onOpenURL fired with URL: %@", url);
+    if (!url) return;
 
-    self.launchParams = [self parseURL:url];
-    NSLog(@"[WebIntent] launchParams parsed = %@", self.launchParams);
-}
-
-- (NSDictionary *)parseURL:(NSURL*)url
-{
+    // Parse deep link parameters into dictionary
+    NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
 
-    NSString *query = url.query;
-    NSLog(@"[WebIntent] Raw query = %@", query);
-
-    NSArray *parts = [query componentsSeparatedByString:@"&"];
-
-    for (NSString *part in parts) {
-        NSArray *pair = [part componentsSeparatedByString:@"="];
-        if (pair.count == 2) {
-            NSString *key = pair[0];
-            NSString *value = pair[1];
-            params[key] = value;
-            NSLog(@"[WebIntent] Added param: %@ = %@", key, value);
-        }
+    for (NSURLQueryItem *item in components.queryItems) {
+        params[item.name] = item.value ?: @"";
     }
 
-    return params;
+    NSDictionary *result = @{
+        @"url": url.absoluteString,
+        @"data": params
+    };
+
+    if (pendingCommand != nil) {
+        CDVPluginResult *pluginResult =
+            [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:result];
+
+        [pluginResult setKeepCallbackAsBool:YES];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:pendingCommand.callbackId];
+    }
 }
 
-- (void)getExtra:(CDVInvokedUrlCommand*)command
-{
-    NSString *key = [command.arguments objectAtIndex:0];
-    NSLog(@"[WebIntent] getExtra called for key: %@", key);
+- (void)getIntent:(CDVInvokedUrlCommand*)command {
+    pendingCommand = command;
 
-    NSString *val = self.launchParams[key];
-    NSLog(@"[WebIntent] getExtra result: %@", val);
+    // Always keep the callback alive for future deep links
+    CDVPluginResult *pluginResult =
+        [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{}];
 
-    if (val) {
-        CDVPluginResult *result =
-            [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:val];
-        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-    } else {
-        CDVPluginResult *result =
-            [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Not found"];
-        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-    }
+    [pluginResult setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 @end
